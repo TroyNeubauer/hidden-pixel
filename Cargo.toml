@@ -1,6 +1,10 @@
 [package]
-name = "hidden-pixel"
+name = "steg_client"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+anyhow = "1.0.82"
+chacha20 = "0.9.1"
+ipipe = "0.11.7"
+x25519-dalek = { version = "2.0.1", features = ["getrandom", "static_secrets"] }
