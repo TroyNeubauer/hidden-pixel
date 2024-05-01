@@ -18,7 +18,23 @@ Begin Video Stream and Stop Video Stream are single 8 bit opcodes with no associ
 # The Secret Handshake
 
 The secret handshake begins when a client initiates a TCP connection to the server and calls Set Parameter with a 256 bit x25519 public key. Next the client calls Begin Video Stream. In the background the server recognizes this secret handshake and generates its own public and privates x25519 keys, using the client's public key to derive a shared secret. The server begin video streaming with stenography active.
-The first 256 bits injected in the infra-prediction angles are the server's public key, which the client uses with its private key to compute the same shared secret. After the server's public key is transmitted, the payload data is encrypted using the shared secret and the ChaCha20 stream cipher. The cipher text is then injected into the angles as the video is transmitted to the client. The client extracts the cipher text from the doctored angles, and decrypts the payload using the same shared key and algorithm, printing the secret message as it is streamed. 
+The first 256 bits injected in the infra-prediction angles are the server's public key, which the client uses with its private key to compute the same shared secret. After the server's public key is transmitted, the payload data is encrypted using the shared secret and the ChaCha20 stream cipher. The cipher text is then injected into the angles as the video is transmitted to the client. The client extracts the cipher text from the doctored angles, and decrypts the payload using the same shared key and algorithm, printing the secret message as it is streamed:
+
+
+![Example of running client and server](https://github.com/TroyNeubauer/hidden-pixel/blob/master/docs/steg_working.png)
+Produced by running
+
+The server:
+```
+RAV1E_LOG=info cargo run --release --bin rav1e_server -- data/winter-forest.y4m -o data/winter-forest2.ivf --hidden-string "Hello, Youtube!" --hidden-bits-padding 0 --hidden-bits-offset 0
+```
+in my ([rav1e repo](https://github.com/TroyNeubauer/rav1e))
+
+The client:
+```
+cargo r
+```
+Inside the root of this repo, _after_ compiling ([dav1d](https://github.com/TroyNeubauer/dav1d)).
 
 # Drawbacks
 
